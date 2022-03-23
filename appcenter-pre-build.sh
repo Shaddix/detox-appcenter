@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-if [ -z "$APP_CENTER_CURRENT_PLATFORM" ]
-then
-    echo "You need define the APP_CENTER_CURRENT_PLATFORM variable in App Center with values android or ios"
-    exit
-fi
-
-if [ "$APP_CENTER_CURRENT_PLATFORM" == "android" ]
-then
     echo "Setup Android simulator"
     SIMULATOR_IMAGE="system-images;android-28;google_apis;x86"
     SIMULATOR_NAME="Pixel_XL_API_28"
@@ -27,18 +19,6 @@ then
     echo "no" | avdmanager --verbose create avd --force --name "$SIMULATOR_NAME" --device "pixel" --package "$SIMULATOR_IMAGE" --tag "google_apis" --abi "x86"
 
     DETOX_CONFIG=android.emu.release
-else
-    echo "Install AppleSimUtils"
-
-    brew tap wix/brew
-    brew update
-    brew install applesimutils
-
-    echo "Install pods "
-    cd ios; pod install; cd ..
-
-    DETOX_CONFIG=ios.sim.release
-fi
 
 
 echo "Building the project for Detox tests..."
